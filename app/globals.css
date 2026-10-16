@@ -18,9 +18,11 @@ html {
   box-sizing: border-box;
 }
 
-/* Landing hero copy: horizon light-sweep reveal (see components/HeroCopy.tsx). While the attribute is present the
-   text is masked by a soft band: dim (0.16) ahead of --sweep-x, fully opaque behind it. The attribute is removed when
-   the sweep ends, so the resting text is exactly the plain white heading. */
+/* Landing hero copy: horizon light-sweep reveal (see components/HeroCopy.tsx). While the attribute is present:
+   - the opacity mask keeps the text dim (0.16) ahead of --sweep-x and fully opaque behind it, and
+   - the glyphs are filled by white plus a narrow, feathered, pale-gold tint centred on --sweep-x (background-clip: text),
+     so the warm light lives only inside the letterforms and nothing is painted outside them.
+   The attribute is removed when the sweep ends, so the resting text is exactly the plain white heading. */
 .hero-copy[data-sweep] {
   -webkit-mask-image: linear-gradient(
     90deg,
@@ -36,13 +38,25 @@ html {
     rgba(0, 0, 0, 0.16) calc(var(--sweep-x) + var(--sweep-band) / 2),
     rgba(0, 0, 0, 0.16) 100%
   );
-  -webkit-mask-clip: no-clip;
-  mask-clip: no-clip;
+  background-image: linear-gradient(
+      90deg,
+      rgba(255, 214, 140, 0) calc(var(--sweep-x) - var(--hl-back)),
+      rgba(255, 214, 140, var(--tint)) var(--sweep-x),
+      rgba(255, 214, 140, 0) calc(var(--sweep-x) + var(--hl-front))
+    ),
+    linear-gradient(#fff, #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-copy[data-sweep] {
     -webkit-mask-image: none;
     mask-image: none;
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    color: #fff;
   }
 }
