@@ -1,9 +1,28 @@
+"use client";
+
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import aboutImage from "../Landing page/About us.webp";
+import { initCssReveal } from "./avatr07/cssReveal";
 
 export default function AboutSection() {
+  const section = useRef<HTMLElement>(null);
+  const group = useRef<HTMLDivElement>(null);
+
+  // Calm entrance for the text only (the image and overlay are untouched): label, headline, link, sentence each
+  // fade 0 -> 1 while rising 10px, power2.out, 150ms apart (about 1.1s in total). Plays once, when the text enters the
+  // viewport. Compositor-driven CSS transitions via cssReveal; skipped under prefers-reduced-motion.
+  useLayoutEffect(() => {
+    const el = section.current;
+    const g = group.current;
+    if (!el || !g || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const steps = (Array.from(g.children) as HTMLElement[]).map((child, i) => ({ els: [child], delay: i * 150, y: 10, duration: 650 }));
+    return initCssReveal(el, g, steps, { triggerAt: 0.8 });
+  }, []);
+
   return (
     <section
+      ref={section}
       id="about"
       className="relative w-full scroll-mt-14 aspect-[3/4] sm:aspect-[16/10] md:scroll-mt-[72px] md:aspect-video overflow-hidden bg-black"
     >
@@ -27,7 +46,7 @@ export default function AboutSection() {
       />
 
       {/* Text sits high, over the dark backdrop of the photo, clear of the car body. */}
-      <div className="absolute inset-x-0 top-[12%] flex flex-col items-center px-6 text-center">
+      <div ref={group} className="absolute inset-x-0 top-[12%] flex flex-col items-center px-6 text-center">
         <span className="text-[clamp(0.8125rem,0.95vw,1.125rem)] leading-none tracking-[0.34em] text-white/85">
           AVATR
         </span>
