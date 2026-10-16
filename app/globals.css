@@ -17,3 +17,32 @@ html {
 * {
   box-sizing: border-box;
 }
+
+/* Landing hero copy: horizon light-sweep reveal (see components/HeroCopy.tsx). While the attribute is present the
+   text is masked by a soft band: dim (0.16) ahead of --sweep-x, fully opaque behind it. The attribute is removed when
+   the sweep ends, so the resting text is exactly the plain white heading. */
+.hero-copy[data-sweep] {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(var(--sweep-x) - var(--sweep-band) / 2),
+    rgba(0, 0, 0, 0.16) calc(var(--sweep-x) + var(--sweep-band) / 2),
+    rgba(0, 0, 0, 0.16) 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    #000 0,
+    #000 calc(var(--sweep-x) - var(--sweep-band) / 2),
+    rgba(0, 0, 0, 0.16) calc(var(--sweep-x) + var(--sweep-band) / 2),
+    rgba(0, 0, 0, 0.16) 100%
+  );
+  -webkit-mask-clip: no-clip;
+  mask-clip: no-clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy[data-sweep] {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}

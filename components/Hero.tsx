@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HeroCopy from "./HeroCopy";
 import heroImage from "../Landing page/landing page visual.webp";
 
 // Image hero with a single line of copy at the bottom centre. The source is 6336x2688 (wider than any viewport), so `object-cover` is height-driven on
@@ -31,9 +32,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-t from-black/45 via-black/15 to-transparent"
       />
 
-      <h1 className="absolute inset-x-0 bottom-[clamp(2.25rem,7.5svh,6rem)] mx-auto max-w-[min(90%,34rem)] text-balance pl-[calc(0.5rem+0.16em)] pr-2 text-center text-[clamp(1.125rem,1.7vw,2.125rem)] font-light uppercase leading-[1.35] tracking-[0.16em] text-white md:max-w-none md:whitespace-nowrap">
-        Welcome to a New Horizon of Perfection
-      </h1>
+      <HeroCopy />
     </section>
   );
 }
