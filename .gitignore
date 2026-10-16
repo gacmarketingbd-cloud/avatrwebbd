@@ -1,0 +1,59 @@
+# dependencies
+/node_modules
+
+# next.js / build output
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# deployment
+.vercel
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# environment files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+._*
+__MACOSX/
+.idea/
+.vscode/
+
+# dev / test tooling and its output (Puppeteer QA scripts, screenshots) - not part of the shipped site
+/scripts/
+/tools/
+/.scratch/
+/screenshots/
+/test-results/
+/coverage/
+
+# source / reference material - keep outside the repo (the site only needs what is imported from
+# "avatr 07 page/", "Landing page/", "AVATRFont/" and the brand PNGs, plus public/)
+/archive/
+/reference/
+/source-media/
+/page videos/
+/avatr 07 page/page videos/
+/screencapture-*
+/*.pdf
+/*.psd
+/*.psb
+/*.ai
+/*.mov
+/*.tif
+/*.tiff
+/*.zip
+/avatr 07 page/*.pdf
+/Landing page/*.pdf
+/PROJECT_STATUS.md
