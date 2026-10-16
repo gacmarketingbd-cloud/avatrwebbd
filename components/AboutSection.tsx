@@ -12,7 +12,8 @@ export default function AboutSection() {
         alt="AVATR interior — emotional intelligence, motion in delight"
         fill
         className="object-cover"
-        sizes="100vw"
+        quality={95}
+        sizes="(max-width: 639px) 250vw, (max-width: 767px) 118vw, 106vw"
       />
 
       {/* Cinematic overlay: a soft top-to-bottom shade plus a centre-focused pool of darkness behind the text. */}
