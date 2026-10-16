@@ -9,6 +9,9 @@ const nextConfig = {
     // 100 is used for the AVATR 07 page, where every supplied image is shown
     // at near-lossless quality (see the image-quality rule in claude.md).
     qualities: [75, 95, 100],
+    // One step above Next's default 3840 cap: the landing hero is a 6336px-wide photo painted ~2.4x the viewport
+    // height wide, so a 1920x1080 @2x display needs ~5100px to stay crisp.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840, 5120],
   },
 };
 
