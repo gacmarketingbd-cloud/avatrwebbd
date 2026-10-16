@@ -15,25 +15,34 @@ export default function AboutSection() {
         sizes="100vw"
       />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/55 via-transparent to-black/60" />
+      {/* Cinematic overlay: a soft top-to-bottom shade plus a centre-focused pool of darkness behind the text. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 62% 48% at 50% 50%, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0) 100%), linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.08) 38%, rgba(0,0,0,0.1) 62%, rgba(0,0,0,0.45) 100%)",
+        }}
+      />
 
-      <div className="absolute inset-x-0 top-8 flex flex-col items-center px-4 text-center md:top-14">
-        <span className="text-eyebrow tracking-[0.3em] text-white/80">AVATR</span>
-        <h2 className="mt-2 max-w-3xl text-xl font-bold uppercase tracking-wide text-white md:mt-3 md:text-3xl">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+        <span className="text-[clamp(0.8125rem,1.05vw,1.25rem)] leading-none tracking-[0.34em] text-white/85">
+          AVATR
+        </span>
+        <h2 className="mt-[clamp(0.875rem,1.5vw,1.75rem)] max-w-[min(92%,22ch)] text-balance text-[clamp(1.75rem,3.7vw,4.25rem)] font-normal uppercase leading-[1.12] tracking-[0.02em] text-white">
           Emotional Intelligence, Motion in Delight
         </h2>
         <a
           href="#"
-          className="mt-3 text-nav tracking-wide text-white/85 hover:text-white transition-colors md:mt-4"
+          className="mt-[clamp(1.125rem,2vw,2.25rem)] text-[clamp(0.9375rem,1.1vw,1.3125rem)] leading-none tracking-wide text-white/90 transition-colors hover:text-white"
         >
           About us &gt;
         </a>
+        <p className="mt-[clamp(1.75rem,3.6vw,4.25rem)] max-w-[min(92%,44rem)] text-balance text-[clamp(0.875rem,1.05vw,1.25rem)] leading-[1.6] tracking-[0.01em] text-white/80">
+          With forward-looking design and warm technology, it continuously creates
+          future-leading travel experiences for users.
+        </p>
       </div>
-
-      <p className="absolute inset-x-0 bottom-8 px-4 text-center text-body text-white/80 md:bottom-12">
-        With forward-looking design and warm technology, it continuously creates
-        future-leading travel experiences for users.
-      </p>
     </section>
   );
 }
