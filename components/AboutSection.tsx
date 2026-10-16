@@ -1,5 +1,5 @@
 import Image from "next/image";
-import aboutImage from "../Landing page/About us image.jpg";
+import aboutImage from "../Landing page/About us.webp";
 
 export default function AboutSection() {
   return (
