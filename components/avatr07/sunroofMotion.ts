@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 
 import "./motionKit";
 
@@ -73,7 +74,7 @@ export function initSunroofCopy(root: HTMLElement) {
     };
     evaluate();
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
   }, root);

@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -117,7 +118,7 @@ export function initCssReveal(
     };
     evaluate();
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
   }, section);

@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { buildOdometer } from "./odometer";
 import { FADE_RISE, addFadeRise, hideFadeRise } from "./fadeRise";
 
@@ -123,7 +124,7 @@ export function initLuxuryStatsMotion(root: HTMLElement) {
       window.removeEventListener("resize", evaluate);
     });
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
   }, root);

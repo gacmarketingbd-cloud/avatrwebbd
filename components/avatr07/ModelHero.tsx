@@ -8,7 +8,9 @@ export default function ModelHero() {
         src={hero}
         alt="AVATR 07 on a coastal plaza"
         fill
-        priority
+        preload
+        loading="eager"
+        fetchPriority="high"
         quality={100}
         sizes="100vw"
         className="object-cover object-[38%_center] md:object-center"

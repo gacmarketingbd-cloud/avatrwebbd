@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { buildOdometer } from "./odometer";
 import { FADE_RISE, TOP_SPEED, addFadeRise, hideFadeRise } from "./fadeRise";
 
@@ -150,7 +151,7 @@ export function initSpecsIntroMotion(root: HTMLElement) {
     // Already scrolled past the start (e.g. reload mid-page): play straight away.
     if (st.progress > 0) play();
 
-    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+    document.fonts?.ready.then(() => refreshScrollTriggers());
   }, root);
 
   return () => {

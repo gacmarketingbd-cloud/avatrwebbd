@@ -79,7 +79,6 @@ export default function CockpitFeature() {
             alt={active === "tinted" ? "AVATR 07 cockpit in Tinted Shadows" : ""}
             aria-hidden={active !== "tinted"}
             fill
-            priority
             quality={100}
             sizes="(min-width: 768px) 100vw, (min-width: 640px) 170vw, 280vw"
             className="object-fill"
@@ -102,7 +101,6 @@ export default function CockpitFeature() {
               alt={active === "glacier" ? "AVATR 07 cockpit in Glacier Caramel" : ""}
               aria-hidden={active !== "glacier"}
               fill
-              priority
               quality={100}
               sizes="(min-width: 768px) 108vw, (min-width: 640px) 185vw, 310vw"
               className="-scale-x-100 object-fill"

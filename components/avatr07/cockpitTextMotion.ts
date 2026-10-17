@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { FADE_RISE, addFadeRise, hideFadeRise } from "./fadeRise";
 
 import "./motionKit";
@@ -69,7 +70,7 @@ export function initCockpitText(headline: HTMLElement, subcopy: HTMLElement) {
     window.addEventListener("resize", evaluate);
     evaluate(); // already beyond the trigger at load (e.g. reload mid-page)
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
 

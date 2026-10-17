@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 
 import { EASE_RISE, MAX_RISE } from "./motionKit";
 
@@ -85,7 +86,7 @@ export function initStorageText(section: HTMLElement) {
     };
     evaluate();
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
   }, section);

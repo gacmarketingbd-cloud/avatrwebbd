@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { buildOdometer } from "./odometer";
 
 import "./motionKit";
@@ -88,7 +89,7 @@ export function initStatRoll(root: HTMLElement) {
     });
     evaluate(); // already beyond the trigger at load
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
   }, root);

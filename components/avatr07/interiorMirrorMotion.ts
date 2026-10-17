@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { EASE_RISE } from "./motionKit";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -51,7 +52,7 @@ export function initInteriorMirrorReveal(panel: HTMLElement) {
     };
     evaluate();
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
   }, panel);

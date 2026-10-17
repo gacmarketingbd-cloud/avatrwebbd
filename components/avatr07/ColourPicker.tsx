@@ -57,7 +57,6 @@ export default function ColourPicker() {
             alt={i === active ? `AVATR 07 in ${c.name}` : ""}
             aria-hidden={i !== active}
             fill
-            priority={i === 0}
             quality={100}
             sizes="(min-width: 1920px) 1000px, (min-width: 768px) 53vw, 128vw"
             className="object-cover object-[50%_51.8%] transition-opacity duration-500 ease-in-out"

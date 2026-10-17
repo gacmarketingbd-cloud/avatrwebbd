@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { buildOdometer } from "./odometer";
 
 import "./motionKit";
@@ -207,7 +208,7 @@ export function initGoldenRatioMotion(frame: HTMLElement, text: HTMLElement) {
     window.addEventListener("resize", evaluate);
     evaluate(); // already beyond a trigger at load (e.g. reload mid-page)
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
 

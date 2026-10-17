@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 
 import "./motionKit";
 
@@ -102,7 +103,7 @@ export function initMosaicCaptions(section: HTMLElement) {
     window.addEventListener("resize", evaluate);
     evaluate(); // already beyond a trigger at load (e.g. reload mid-page)
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
 

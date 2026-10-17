@@ -1,5 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { refreshScrollTriggers } from "./scrollRefresh";
 import { FADE_RISE } from "./fadeRise";
 
 import { MAX_RISE } from "./motionKit";
@@ -96,7 +97,7 @@ export function initAmbientLighting(section: HTMLElement) {
     });
     evaluate();
     document.fonts?.ready.then(() => {
-      ScrollTrigger.refresh();
+      refreshScrollTriggers();
       evaluate();
     });
 

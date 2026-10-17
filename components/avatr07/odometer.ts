@@ -6,6 +6,21 @@ type Options = {
   rowsBefore?: number;
 };
 
+// Overlays are attached together at the end of the current turn (a microtask, so before the next paint) rather than
+// one by one: every number measures its glyphs with Range.getBoundingClientRect(), and appending an overlay between two
+// measurements would force a fresh layout of the page for each number. Measure all, then write all.
+const pending: Array<[HTMLElement, HTMLElement]> = [];
+let attachQueued = false;
+function queueAttach(host: HTMLElement, overlay: HTMLElement) {
+  pending.push([host, overlay]);
+  if (attachQueued) return;
+  attachQueued = true;
+  queueMicrotask(() => {
+    attachQueued = false;
+    for (const [h, o] of pending.splice(0)) h.appendChild(o);
+  });
+}
+
 // Builds an overlay of per-digit vertical strips on top of a number. The real text stays
 // in place (only made transparent by the caller) so layout, semantics and the final frame
 // are untouched; the caller removes the overlay once the roll settles. Non-digit characters
@@ -75,6 +90,6 @@ export function buildOdometer(numEl: HTMLElement, opts: Options = {}): Odometer 
     strips.push(strip);
   });
 
-  numEl.appendChild(overlay);
+  queueAttach(numEl, overlay);
   return { overlay, strips, rowH, rows };
 }
