@@ -70,3 +70,9 @@ html {
     margin-left: calc(-74.5 * max(100vw / 6336, 90svh / 2688));
   }
 }
+
+/* First paint of a page that is still loading: the animated sections stay invisible (visibility keeps their boxes, so
+   nothing shifts) until MotionReady lifts the flag after they have armed their start states. */
+html.motion-pending [data-motion] {
+  visibility: hidden;
+}

@@ -27,6 +27,7 @@ import Airbags from "@/components/avatr07/Airbags";
 import DoorSillBeam from "@/components/avatr07/DoorSillBeam";
 import FrontImpactBeam from "@/components/avatr07/FrontImpactBeam";
 import BatterySafety from "@/components/avatr07/BatterySafety";
+import MotionReady from "@/components/MotionReady";
 import { ROOT_SCALE } from "@/components/avatr07/scale";
 
 export const metadata: Metadata = {
@@ -39,6 +40,9 @@ export default function Avatr07Page() {
     <main className="min-h-screen bg-white" style={ROOT_SCALE}>
       <Header />
       <ModelHero />
+      {/* Every section with a scroll animation sits in this layout-neutral wrapper (display: contents) so the page can
+          keep them unpainted until they are armed; see MotionReady. */}
+      <div data-motion className="contents">
       <SpecsIntro />
       <GoldenRatio />
       <DesignMosaic />
@@ -59,6 +63,8 @@ export default function Avatr07Page() {
       <TaihangChassis />
       <HardBraking />
       <KunlunPowertrain />
+      </div>
+      <MotionReady />
       <ElectricPlatform />
       <Airbags />
       <DoorSillBeam />
