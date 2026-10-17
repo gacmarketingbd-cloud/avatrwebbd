@@ -50,7 +50,7 @@ export default function RearCabin() {
       />
       <div
         ref={stats}
-        className="absolute inset-x-0 bottom-0 flex flex-col items-center px-5 md:flex-row md:items-start md:justify-center"
+        className="stat-stable absolute inset-x-0 bottom-0 flex flex-col items-center px-5 md:flex-row md:items-start md:justify-center"
         style={{ paddingBottom: u(50, 24), gap: u(120, 18) }}
       >
         {STATS.map((s) => (

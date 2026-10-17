@@ -1,6 +1,11 @@
 type Odometer = { overlay: HTMLElement; strips: HTMLElement[]; rowH: number; rows: number[] };
 
 type Options = {
+  // Draw each digit exactly where the real glyph sits, and paint the strips in the page (no compositor layer). Without it a cell inherits `text-align` from its ancestors, so
+  // inside a centred block (`text-center`) every digit is centred in its cell, which is 3px wider than the glyph (the
+  // left padding), and lands 1.5px to the right of the real text; the roll then snaps back by that much when the real
+  // number replaces the overlay. Off by default so sections not yet verified keep their current behaviour.
+  exactAlign?: boolean;
   // Number of digit rows that roll past before the final digit. Leave undefined for a
   // full 0-9 pass then on to the final digit (used by the large spec numbers).
   rowsBefore?: number;
@@ -57,9 +62,12 @@ export function buildOdometer(numEl: HTMLElement, opts: Options = {}): Odometer 
       r.width + pad * 2
     }px;height:${rowH}px;overflow:hidden;`;
     const strip = document.createElement("span");
-    strip.style.cssText = "display:block;will-change:transform;";
+    // exactAlign: no layer hint. The strip is painted into the page like the real number it stands in for, so its last
+    // frame is rasterised exactly like the resting text (a promoted layer anti-aliases and snaps glyphs differently,
+    // which showed as a step when the real number took over). Callers animate it with force3D off for the same reason.
+    strip.style.cssText = opts.exactAlign ? "display:block;" : "display:block;will-change:transform;";
 
-    const cellStyle = `display:block;height:${rowH}px;line-height:${rowH}px;padding-left:${pad}px;white-space:nowrap;`;
+    const cellStyle = `display:block;height:${rowH}px;line-height:${rowH}px;padding-left:${pad}px;white-space:nowrap;${opts.exactAlign ? "text-align:left;" : ""}`;
     const addCell = (label: string) => {
       const cell = document.createElement("span");
       cell.textContent = label;

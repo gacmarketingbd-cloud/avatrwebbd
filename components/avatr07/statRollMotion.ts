@@ -47,7 +47,7 @@ export function initStatRoll(root: HTMLElement) {
           const num = spec.querySelector<HTMLElement>("[data-fx='spec-num']")!;
           const after = spec.querySelectorAll("[data-fx='spec-unit'], [data-fx='spec-label']");
           const start = i * NUMBER_STAGGER;
-          const odo = buildOdometer(num, { rowsBefore: ROLL_ROWS });
+          const odo = buildOdometer(num, { rowsBefore: ROLL_ROWS, exactAlign: true });
           if (!odo) {
             tl.to(num, { autoAlpha: 1, duration: 0.4 }, start);
             tl.to(after, { autoAlpha: 1, y: 0, duration: 0.5 }, start + 0.35);
@@ -57,7 +57,14 @@ export function initStatRoll(root: HTMLElement) {
           num.style.color = "transparent"; // real text hidden; the overlay is the visible roll
           tl.to(num, { autoAlpha: 1, duration: 0.15, ease: "power1.out" }, start);
           odo.strips.forEach((strip, d) => {
-            tl.fromTo(strip, { y: 0 }, { y: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE }, start + d * DIGIT_STAGGER);
+            // Not promoted to a layer (no 3D transform, no will-change; the page-wide defaults are overridden for these two
+            // hooks): the digits are rasterised like the resting number, so nothing re-renders when the real one replaces them.
+            tl.fromTo(
+              strip,
+              { y: 0 },
+              { y: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE, force3D: false, onStart: () => undefined, onComplete: () => undefined },
+              start + d * DIGIT_STAGGER
+            );
           });
           const settled = start + (odo.strips.length - 1) * DIGIT_STAGGER + ROLL_DURATION;
           tl.call(

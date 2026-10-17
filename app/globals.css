@@ -76,3 +76,11 @@ html {
 html.motion-pending [data-motion] {
   visibility: hidden;
 }
+
+/* Rear Cabin stats: the unit and caption stay on their own composited layer, at rest as well as while they
+   animate. A layer that is dropped when the animation ends re-rasterises the text (a different anti-aliasing mode,
+   so the glyphs visibly shift for a frame); keeping the same layer means the last animated frame IS the resting frame. */
+.stat-stable [data-fx="spec-unit"],
+.stat-stable [data-fx="spec-label"] {
+  will-change: transform, opacity;
+}
