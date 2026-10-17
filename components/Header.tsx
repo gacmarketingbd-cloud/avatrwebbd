@@ -78,7 +78,9 @@ const LOGO_EASE = "cubic-bezier(0.42, 0, 0, 1)";
 
 const NAV_CLASS = "text-nav text-white/80 hover:text-white transition-colors";
 
-export default function Header() {
+// `heroLogoAlign` (landing page only): from lg up, nudge the centred logo onto the vertical axis of the emblem painted
+// in the hero photo below it (see .hero-logo-align in globals.css). Everything else about the header is unchanged.
+export default function Header({ heroLogoAlign = false }: { heroLogoAlign?: boolean } = {}) {
   const [hovered, setHovered] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -156,7 +158,7 @@ export default function Header() {
         <Link
           href="/"
           aria-label="AVATR home"
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2${heroLogoAlign ? " hero-logo-align" : ""}`}
         >
           {/* Mobile: static vertical mark, sized up to match the enlarged desktop scale */}
           <span className="block md:hidden">

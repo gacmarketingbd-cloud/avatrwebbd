@@ -60,3 +60,13 @@ html {
     color: #fff;
   }
 }
+
+/* Landing header only, desktop (lg+): the hero photo is height-driven (inset 5% top/bottom, scale = max(100vw/6336,
+   90svh/2688) of its 6336x2688 source) and shifted left 71.5px (source) to centre the two cars; its glass emblem sits
+   3px (source) left of the photo centre, so 74.5 source px left of the viewport centre. Shifting the header logo by that
+   much puts both on one vertical axis at any desktop size. */
+@media (min-width: 1024px) {
+  .hero-logo-align {
+    margin-left: calc(-74.5 * max(100vw / 6336, 90svh / 2688));
+  }
+}
