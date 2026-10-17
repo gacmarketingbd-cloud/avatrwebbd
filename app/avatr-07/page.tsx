@@ -28,6 +28,7 @@ import DoorSillBeam from "@/components/avatr07/DoorSillBeam";
 import FrontImpactBeam from "@/components/avatr07/FrontImpactBeam";
 import BatterySafety from "@/components/avatr07/BatterySafety";
 import MotionReady from "@/components/MotionReady";
+import PageTopReset from "@/components/PageTopReset";
 import { ROOT_SCALE } from "@/components/avatr07/scale";
 
 export const metadata: Metadata = {
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
 export default function Avatr07Page() {
   return (
     <main className="min-h-screen bg-white" style={ROOT_SCALE}>
+      <PageTopReset />
       <Header />
       <ModelHero />
       {/* Every section with a scroll animation sits in this layout-neutral wrapper (display: contents) so the page can

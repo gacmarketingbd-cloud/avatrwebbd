@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { refreshScrollTriggers } from "./scrollRefresh";
+import { createTriggerGate, refreshScrollTriggers } from "./scrollRefresh";
 import { buildOdometer } from "./odometer";
 import { FADE_RISE, TOP_SPEED, addFadeRise, hideFadeRise } from "./fadeRise";
 
@@ -142,16 +142,32 @@ export function initSpecsIntroMotion(root: HTMLElement) {
       });
     };
 
-    const st = ScrollTrigger.create({
-      trigger: root,
-      start: "top 75%",
-      once: true,
-      onEnter: play,
+    // Plays when the section top reaches 75% down the screen (the same point as before), judged from the live layout
+    // every time rather than from a position cached at load: on a first visit that cached position could be taken
+    // before the page had settled and mark the section as already passed. Nothing is decided while the viewer is still
+    // at the top of the page, or before a client-side navigation has put the window back at the top (see scrollRefresh).
+    const trust = createTriggerGate(() => evaluate());
+    cleanups.push(trust.dispose);
+    const evaluate = () => {
+      if (!played && trust.gate() && root.getBoundingClientRect().top < window.innerHeight * 0.75) play();
+    };
+    ScrollTrigger.create({ trigger: root, start: "top 75%", once: true, onEnter: evaluate });
+    window.addEventListener("scroll", evaluate, { passive: true });
+    window.addEventListener("resize", evaluate);
+    document.addEventListener("visibilitychange", evaluate);
+    cleanups.push(() => {
+      window.removeEventListener("scroll", evaluate);
+      window.removeEventListener("resize", evaluate);
+      document.removeEventListener("visibilitychange", evaluate);
     });
-    // Already scrolled past the start (e.g. reload mid-page): play straight away.
-    if (st.progress > 0) play();
-
-    document.fonts?.ready.then(() => refreshScrollTriggers());
+    // Reload mid-page: already past the start. Checked on the next frame, not now: when this page is reached from the
+    // landing page, this runs while the window still has the landing page's scroll position, a moment before
+    // RouteScrollReset puts it back to the top, which would mark the section as passed.
+    requestAnimationFrame(evaluate);
+    document.fonts?.ready.then(() => {
+      refreshScrollTriggers();
+      evaluate();
+    });
   }, root);
 
   return () => {

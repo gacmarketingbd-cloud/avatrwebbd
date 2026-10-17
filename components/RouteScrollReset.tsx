@@ -21,8 +21,13 @@ export default function RouteScrollReset() {
   const poppedAt = useRef(-Infinity);
 
   useEffect(() => {
+    // Shared with PageTopReset and the top-of-page motion gate (scrollRefresh): from now on a page mount means a
+    // client-side navigation, and the time of the last Back/Forward. (Deliberately no GSAP import here: loading
+    // ScrollTrigger in the root layout stalled lazy image requests after a mid-page reload.)
+    (window as Window & { __avatrHydrated?: boolean }).__avatrHydrated = true;
     const onPop = () => {
       poppedAt.current = performance.now();
+      (window as Window & { __avatrPoppedAt?: number }).__avatrPoppedAt = poppedAt.current;
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);

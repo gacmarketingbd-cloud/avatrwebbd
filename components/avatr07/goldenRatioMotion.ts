@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { refreshScrollTriggers } from "./scrollRefresh";
+import { createTriggerGate, refreshScrollTriggers } from "./scrollRefresh";
 import { buildOdometer } from "./odometer";
 
 import "./motionKit";
@@ -197,16 +197,24 @@ export function initGoldenRatioMotion(frame: HTMLElement, text: HTMLElement) {
     // ---------------- triggers: each block starts ONLY its own timeline ----------------
     // Evaluated from each block's own position (scroll, resize, load, fonts), so a trigger that has
     // been passed — however fast — always starts its timeline, and nothing else is touched.
+    // Judged from the live layout every time, and never while the viewer is still at the top of the page (see
+    // scrollRefresh): a first visit must not mark either block as played before it is reached.
+    const trust = createTriggerGate(() => evaluate());
+    cleanups.push(trust.dispose);
     const evaluate = () => {
-      if (disposed) return;
+      if (disposed || !trust.gate()) return;
       if (!overlayStarted && frame.getBoundingClientRect().top < window.innerHeight * OVERLAY_AT) playOverlay();
       if (!textStarted && text.getBoundingClientRect().top < window.innerHeight * TEXT_AT) playText();
     };
-    ScrollTrigger.create({ trigger: frame, start: `top ${OVERLAY_AT * 100}%`, once: true, onEnter: playOverlay });
-    ScrollTrigger.create({ trigger: text, start: `top ${TEXT_AT * 100}%`, once: true, onEnter: playText });
+    ScrollTrigger.create({ trigger: frame, start: `top ${OVERLAY_AT * 100}%`, once: true, onEnter: evaluate });
+    ScrollTrigger.create({ trigger: text, start: `top ${TEXT_AT * 100}%`, once: true, onEnter: evaluate });
     window.addEventListener("scroll", evaluate, { passive: true });
     window.addEventListener("resize", evaluate);
-    evaluate(); // already beyond a trigger at load (e.g. reload mid-page)
+    document.addEventListener("visibilitychange", evaluate);
+    // Already beyond a trigger at load (e.g. reload mid-page). Checked on the next frame, not now: arriving from the
+    // landing page, this runs while the window still holds the landing page's scroll position, just before
+    // RouteScrollReset returns it to the top, which used to mark this block as played before it was ever reached.
+    requestAnimationFrame(evaluate);
     document.fonts?.ready.then(() => {
       refreshScrollTriggers();
       evaluate();
@@ -215,6 +223,7 @@ export function initGoldenRatioMotion(frame: HTMLElement, text: HTMLElement) {
     cleanupListeners = () => {
       window.removeEventListener("scroll", evaluate);
       window.removeEventListener("resize", evaluate);
+      document.removeEventListener("visibilitychange", evaluate);
     };
   }, text);
 
