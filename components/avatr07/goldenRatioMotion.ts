@@ -171,7 +171,7 @@ export function initGoldenRatioMotion(frame: HTMLElement, text: HTMLElement) {
             start
           );
 
-          const odo = buildOdometer(numEl, { rowsBefore: ROLL_ROWS });
+          const odo = buildOdometer(numEl, { rowsBefore: ROLL_ROWS, exactAlign: true });
           if (!odo) return;
           const origColor = numEl.style.color;
           numEl.style.color = "transparent"; // real digits hidden; the overlay is the visible roll
@@ -181,10 +181,13 @@ export function initGoldenRatioMotion(frame: HTMLElement, text: HTMLElement) {
           };
           cleanups.push(restore);
           odo.strips.forEach((strip, d) => {
+            // Moved by `top` and painted in the page like the real digits (no transform or layer hint; the page-wide
+            // hooks are overridden), so the settled overlay is laid out and rasterised exactly like the number that
+            // replaces it (see exactAlign in odometer.ts). autoRound off: GSAP would otherwise round `top` to whole pixels.
             tl.fromTo(
               strip,
-              { y: 0 },
-              { y: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE },
+              { top: 0 },
+              { top: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE, force3D: false, autoRound: false, onStart: () => undefined, onComplete: () => undefined },
               start + ROLL_DELAY + d * ROLL_DIGIT_STAGGER
             );
           });

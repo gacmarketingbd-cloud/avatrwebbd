@@ -39,7 +39,8 @@ export function buildOdometer(numEl: HTMLElement, opts: Options = {}): Odometer 
   if (!text) return null;
 
   const host = numEl.getBoundingClientRect();
-  const rowH = host.height;
+  // exactAlign: rows are a whole number of layout units (1/64 px), so the final row sits at exactly 0 after the roll.
+  const rowH = opts.exactAlign ? Math.round(host.height * 64) / 64 : host.height;
   const overlay = document.createElement("span");
   overlay.setAttribute("aria-hidden", "true");
   // Explicit colour: the real text underneath is made transparent during the roll.
@@ -62,10 +63,12 @@ export function buildOdometer(numEl: HTMLElement, opts: Options = {}): Odometer 
       r.width + pad * 2
     }px;height:${rowH}px;overflow:hidden;`;
     const strip = document.createElement("span");
-    // exactAlign: no layer hint. The strip is painted into the page like the real number it stands in for, so its last
-    // frame is rasterised exactly like the resting text (a promoted layer anti-aliases and snaps glyphs differently,
-    // which showed as a step when the real number took over). Callers animate it with force3D off for the same reason.
-    strip.style.cssText = opts.exactAlign ? "display:block;" : "display:block;will-change:transform;";
+    // exactAlign: no layer hint, and the strip is moved by `top` (callers animate top, not y). It is painted into the
+    // page and its last frame is a plain layout position, so the settled digits are laid out and rasterised exactly
+    // like the real number they hand over to, at any device pixel ratio. (A transform, even a 2D one, rounds the glyph
+    // baseline differently from layout at fractional/HiDPI ratios: a half-pixel step at the swap.) The column clips the
+    // strip, so the per-frame layout stays inside it.
+    strip.style.cssText = opts.exactAlign ? "display:block;position:relative;top:0;" : "display:block;will-change:transform;";
 
     const cellStyle = `display:block;height:${rowH}px;line-height:${rowH}px;padding-left:${pad}px;white-space:nowrap;${opts.exactAlign ? "text-align:left;" : ""}`;
     const addCell = (label: string) => {

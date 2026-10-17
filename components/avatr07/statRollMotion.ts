@@ -57,12 +57,13 @@ export function initStatRoll(root: HTMLElement) {
           num.style.color = "transparent"; // real text hidden; the overlay is the visible roll
           tl.to(num, { autoAlpha: 1, duration: 0.15, ease: "power1.out" }, start);
           odo.strips.forEach((strip, d) => {
-            // Not promoted to a layer (no 3D transform, no will-change; the page-wide defaults are overridden for these two
-            // hooks): the digits are rasterised like the resting number, so nothing re-renders when the real one replaces them.
+            // Moved by `top` (unrounded) and not promoted to a layer (the page-wide hooks are overridden): the settled
+            // digits are laid out and rasterised like the resting number, so nothing changes when the real one replaces
+            // them (see exactAlign in odometer.ts).
             tl.fromTo(
               strip,
-              { y: 0 },
-              { y: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE, force3D: false, onStart: () => undefined, onComplete: () => undefined },
+              { top: 0 },
+              { top: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE, force3D: false, autoRound: false, onStart: () => undefined, onComplete: () => undefined },
               start + d * DIGIT_STAGGER
             );
           });
