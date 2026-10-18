@@ -38,7 +38,7 @@ export default function PanoramicSunroof() {
       />
       <p
         ref={copy}
-        className="absolute inset-x-0 top-0 mx-auto px-5 text-center text-white"
+        className="sunroof-stable absolute inset-x-0 top-0 mx-auto px-5 text-center text-white"
         style={{ paddingTop: u(104, 40), maxWidth: u(1000, 340), fontSize: u(22, 15), lineHeight: 1.55, letterSpacing: "0.01em" }}
       >
         {/* Two lines on desktop (the first ends after "and", as in the reference), each its own masked block that

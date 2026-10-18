@@ -93,3 +93,11 @@ html.motion-pending [data-motion] {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
+
+/* Sunroof copy: each line (and each highlighted figure) is on its own composited layer while the wipe runs. Dropping
+   those layers when the entrance ends re-rasterised the whole paragraph (a one-frame shift), so they keep the same layer. */
+.sunroof-stable [data-line],
+.sunroof-stable [data-hl] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
