@@ -67,7 +67,7 @@ export default function AcousticMaterials() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden text-white [--ih:75vw] md:[--ih:calc(var(--u)*751)]"
+      className="acoustic-stable relative overflow-hidden text-white [--ih:75vw] md:[--ih:calc(var(--u)*751)]"
       style={{ background: BG, paddingBottom: u(96, 48) } as CSSProperties}
     >
       <div className="absolute inset-x-0 top-0" style={{ height: "var(--ih)" }}>

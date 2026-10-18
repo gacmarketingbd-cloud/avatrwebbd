@@ -101,3 +101,16 @@ html.motion-pending [data-motion] {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
+
+/* Meridian (acoustic materials + sound-effect algorithms): the two headings, the four bordered cards with their text,
+   the six icons and their text are composited layers while they animate in. Dropping those layers when each one
+   finishes re-rasterised it (a one-frame step), so they keep the same layer. */
+.acoustic-stable > div > h2,
+.acoustic-stable [data-fx="card"],
+.acoustic-stable [data-fx="card-title"],
+.acoustic-stable [data-fx="card-desc"],
+.acoustic-stable [data-fx="algo"] img,
+.acoustic-stable [data-fx="algo-text"] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
