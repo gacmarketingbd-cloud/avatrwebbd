@@ -84,3 +84,12 @@ html.motion-pending [data-motion] {
 .stat-stable [data-fx="spec-label"] {
   will-change: transform, opacity;
 }
+
+/* Cockpit headline and subcopy, and the Luxury Experience heading and description: same idea as .stat-stable. They sit on their own composited layer while they rise in;
+   dropping that layer when the entrance ends re-rasterises the text (a visible one-frame shift), so they keep it. */
+.text-stable,
+.lux-stable [data-fx="title"],
+.lux-stable [data-fx="subtitle"] {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}

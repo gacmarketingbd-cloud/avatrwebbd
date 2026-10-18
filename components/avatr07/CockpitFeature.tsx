@@ -123,16 +123,15 @@ export default function CockpitFeature() {
         className="absolute inset-x-0 bottom-0 flex flex-col items-center px-5 text-center text-white"
         style={{ paddingBottom: u(22, 18), zIndex: 4 }}
       >
-        <h2 ref={headlineRef} className="font-normal" style={{ fontSize: u(30, 20), lineHeight: 1.15 }}>
+        <h2 ref={headlineRef} className="text-stable font-normal" style={{ fontSize: u(30, 20), lineHeight: 1.15 }}>
           Five-screen Interaction with Digital Wraparound Design
         </h2>
-        {/* will-change / backface-visibility for the entrance are applied by cockpitTextMotion.ts for
-            the duration of the animation only (a permanent layer would snap this text to whole
-            pixels and change how it renders at rest). GSAP is the only thing that ever sets a
-            transform on this element. */}
+        {/* The same will-change / backface-visibility the entrance uses are also set in CSS (.text-stable), so the
+            layer is never dropped when the entrance ends (that re-rasterised the text and made it step). GSAP is
+            the only thing that ever sets a transform on this element. */}
         <p
           ref={subcopyRef}
-          className="font-light"
+          className="text-stable font-light"
           style={{ marginTop: u(2, 4), fontSize: u(16, 13.5), lineHeight: 1.35 }}
         >
           Surround ambient lighting

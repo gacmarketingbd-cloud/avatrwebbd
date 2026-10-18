@@ -81,7 +81,7 @@ export function initLuxuryStatsMotion(root: HTMLElement) {
           const num = spec.querySelector<HTMLElement>("[data-fx='spec-num']")!;
           const after = spec.querySelectorAll("[data-fx='spec-unit'], [data-fx='spec-label']");
           const start = numbersAt + i * NUMBER_STAGGER;
-          const odo = buildOdometer(num, { rowsBefore: ROLL_ROWS });
+          const odo = buildOdometer(num, { rowsBefore: ROLL_ROWS, exactAlign: true });
           if (!odo) {
             tl.to(num, { autoAlpha: 1, duration: 0.5 }, start);
             tl.to(after, { autoAlpha: 1, y: 0, duration: 0.5 }, start + 0.45);
@@ -91,7 +91,14 @@ export function initLuxuryStatsMotion(root: HTMLElement) {
           num.style.color = "transparent"; // real text hidden; the overlay is the visible roll
           tl.to(num, { autoAlpha: 1, duration: 0.2, ease: "power1.out" }, start);
           odo.strips.forEach((strip, d) => {
-            tl.fromTo(strip, { y: 0 }, { y: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE }, start + d * DIGIT_STAGGER);
+            // Moved by unrounded `top` and painted in the page (no layer, page-wide hooks overridden): the settled
+            // digits are laid out and rasterised like the real number that replaces them (see exactAlign in odometer.ts).
+            tl.fromTo(
+              strip,
+              { top: 0 },
+              { top: -odo.rows[d] * odo.rowH, duration: ROLL_DURATION, ease: ROLL_EASE, force3D: false, autoRound: false, onStart: () => undefined, onComplete: () => undefined },
+              start + d * DIGIT_STAGGER
+            );
           });
           const settled = start + (odo.strips.length - 1) * DIGIT_STAGGER + ROLL_DURATION;
           tl.call(

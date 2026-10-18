@@ -23,8 +23,9 @@ const TRIGGER = 0.9; // headline top edge reaches 90% down the screen ("enters t
 const SUBCOPY = { y: 18, force3D: true, opacityOnly: true } as const;
 
 // will-change + backface-visibility: present for the whole entrance so the text sits on its own
-// compositing layer from the first frame to the last; removed afterwards because a permanent layer
-// snaps the text to whole pixels and would change how it renders at rest.
+// compositing layer from the first frame to the last. The headline and subcopy ALSO carry them in CSS
+// (.text-stable), so clearing the inline hints at the end changes nothing: dropping the layer was what
+// re-rasterised the text and made it step by a pixel when the entrance finished.
 function setLayerHints(el: HTMLElement, on: boolean) {
   el.style.willChange = on ? "transform, opacity" : "";
   el.style.backfaceVisibility = on ? "hidden" : "";

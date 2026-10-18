@@ -22,7 +22,7 @@ export default function LuxuryStats() {
   }, []);
 
   return (
-    <section ref={ref} className="bg-white px-5" style={{ paddingTop: u(56, 44), paddingBottom: u(68, 50) }}>
+    <section ref={ref} className="lux-stable bg-white px-5" style={{ paddingTop: u(56, 44), paddingBottom: u(68, 50) }}>
       <SectionHeading
         title="Luxury Experience"
         subtitle="Future-encircling cockpit, premium materials, and exquisite details deliver an unparalleled experience"
@@ -34,7 +34,7 @@ export default function LuxuryStats() {
       />
 
       <dl
-        className="mx-auto flex flex-col items-center md:-translate-x-[calc(var(--u)*14)] md:flex-row md:justify-center"
+        className="stat-stable mx-auto flex flex-col items-center md:-translate-x-[calc(var(--u)*14)] md:flex-row md:justify-center"
         style={{ marginTop: u(60, 32) }}
       >
         {STATS.map((s, i) => (
