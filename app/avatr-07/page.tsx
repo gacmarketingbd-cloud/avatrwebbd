@@ -22,7 +22,6 @@ import HuaweiAds from "@/components/avatr07/HuaweiAds";
 import TaihangChassis from "@/components/avatr07/TaihangChassis";
 import HardBraking from "@/components/avatr07/HardBraking";
 import KunlunPowertrain from "@/components/avatr07/KunlunPowertrain";
-import ElectricPlatform from "@/components/avatr07/ElectricPlatform";
 import Airbags from "@/components/avatr07/Airbags";
 import DoorSillBeam from "@/components/avatr07/DoorSillBeam";
 import FrontImpactBeam from "@/components/avatr07/FrontImpactBeam";
@@ -67,7 +66,6 @@ export default function Avatr07Page() {
       <KunlunPowertrain />
       </div>
       <MotionReady />
-      <ElectricPlatform />
       <Airbags />
       <DoorSillBeam />
       <FrontImpactBeam />
