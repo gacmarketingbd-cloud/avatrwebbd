@@ -11,7 +11,7 @@ import { initSpecsIntroMotion } from "./specsIntroMotion";
 const SPECS = [
   { value: "4825", unit: "mm", label: "Length" },
   { value: "1980", unit: "mm", label: "Width" },
-  { value: "1620", unit: "mm(RWD)", label: "Height" },
+  { value: "1620", unit: "mm", label: "Height" },
   { value: "2940", unit: "mm", label: "Wheelbase" },
 ];
 
