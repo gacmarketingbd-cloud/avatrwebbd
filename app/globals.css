@@ -114,3 +114,11 @@ html.motion-pending [data-motion] {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
+
+/* TEMPORARY (mobile debugging, see components/avatr07/mobileMotionSwitch.ts): a section whose animation is switched
+   off also drops its permanent layer hints, so it renders as completely plain content. */
+[data-mm-off] *,
+[data-mm-off] {
+  will-change: auto !important;
+  backface-visibility: visible !important;
+}

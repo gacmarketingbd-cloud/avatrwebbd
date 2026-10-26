@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import SectionHeading from "./SectionHeading";
 import { INK, TAN, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initLuxuryStatsMotion } from "./luxuryStatsMotion";
 
 const STATS = [
@@ -17,7 +18,7 @@ export default function LuxuryStats() {
   // Scroll-triggered, play-once reveal (GSAP + ScrollTrigger); skipped under prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("lux", el)) return;
     return initLuxuryStatsMotion(el);
   }, []);
 

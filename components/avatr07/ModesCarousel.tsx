@@ -15,6 +15,7 @@ import pet from "../../avatr 07 page/9 Modes/Pet Mode.jpg";
 import rest from "../../avatr 07 page/9 Modes/Rest Mode.jpg";
 import temperature from "../../avatr 07 page/9 Modes/Temperature Maintain Mode.jpg";
 import { INK, TAN, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 
 // Cyclic order, left to right as in the reference (Karaoke, Fireplace, Child, Car Wash, Camping),
 // continued round the loop. Labels are the image file names.
@@ -69,7 +70,7 @@ export default function ModesCarousel() {
     const captionEl = caption.current;
     if (!el) return;
     const state = { pos: START };
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = motionOff("modes", el);
     const intro = { t: reduced ? INTRO.total : 0 }; // seconds into the intro; >= total means finished
     let interactive = reduced;
     let cw = 292;

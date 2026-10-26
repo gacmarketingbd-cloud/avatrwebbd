@@ -11,6 +11,7 @@ import perfectBalance from "../../avatr 07 page/Perfect Balance.png";
 import trueTime from "../../avatr 07 page/True time.png";
 import intelliQ from "../../avatr 07 page/Intelli-Q.png";
 import { u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initAcousticIntro } from "./acousticMotion";
 import { initAlgorithmIntro } from "./algorithmMotion";
 
@@ -55,7 +56,7 @@ export default function AcousticMaterials() {
   // (algorithmMotion.ts), each once when its own heading comes into view. Skipped under prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("materials", el)) return;
     const stopCards = initAcousticIntro(el);
     const stopAlgos = initAlgorithmIntro(el);
     return () => {

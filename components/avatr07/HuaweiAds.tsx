@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import AutoVideo from "./AutoVideo";
 import ArrowButton from "./CarouselArrow";
 import { INK, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initCssReveal } from "./cssReveal";
 
 const SLIDES = [
@@ -41,7 +42,7 @@ export default function HuaweiAds() {
   // directly to scroll position. Skipped under prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = section.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("huawei", el)) return;
     const heading = el.querySelector<HTMLElement>("h2");
     // Stage 1 (text): the heading, then the description, once the text area is in the lower part of the screen.
     const stopText = initCssReveal(

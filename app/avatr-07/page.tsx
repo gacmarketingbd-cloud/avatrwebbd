@@ -29,6 +29,7 @@ import BatterySafety from "@/components/avatr07/BatterySafety";
 import MotionReady from "@/components/MotionReady";
 import MediaAhead from "@/components/avatr07/MediaAhead";
 import PageTopReset from "@/components/PageTopReset";
+import MobileDebugHud from "@/components/avatr07/MobileDebugHud";
 import { ROOT_SCALE } from "@/components/avatr07/scale";
 
 export const metadata: Metadata = {
@@ -73,6 +74,7 @@ export default function Avatr07Page() {
       <FrontImpactBeam />
       <BatterySafety />
       <Footer />
+      <MobileDebugHud />
     </main>
   );
 }

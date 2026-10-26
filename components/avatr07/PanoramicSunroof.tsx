@@ -4,6 +4,7 @@ import { Fragment, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import panoramic from "../../avatr 07 page/Panoramic View.webp";
 import { u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initSunroofCopy } from "./sunroofMotion";
 
 // The copy as tokens: plain words stay at body size and a little dimmer (secondary); the three figures
@@ -21,7 +22,7 @@ export default function PanoramicSunroof() {
 
   useLayoutEffect(() => {
     const el = copy.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("sunroof", el)) return;
     return initSunroofCopy(el);
   }, []);
 

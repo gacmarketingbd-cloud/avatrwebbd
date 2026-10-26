@@ -5,6 +5,7 @@ import Image from "next/image";
 import rearSeat from "../../avatr 07 page/Rear Seat.webp";
 import StatFigure from "./StatFigure";
 import { u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initStatRoll } from "./statRollMotion";
 
 const STATS = [
@@ -24,7 +25,7 @@ export default function RearCabin() {
   // when the stats come into view; skipped under prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = stats.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("seat", el)) return;
     return initStatRoll(el);
   }, []);
 

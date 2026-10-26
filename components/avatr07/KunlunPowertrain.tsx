@@ -8,6 +8,7 @@ import quiet from "../../avatr 07 page/quiet with gasoline or electricity.jpg";
 import refuel from "../../avatr 07 page/Refueling and charge.webp";
 import powerful from "../../avatr 07 page/Powerful performance with or without charge.webp";
 import { INK, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initCssReveal } from "./cssReveal";
 
 const SPEC_NOTE =
@@ -87,7 +88,7 @@ export default function KunlunPowertrain() {
   // prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = section.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("kunlun", el)) return;
     const heading = el.querySelector<HTMLElement>("h2");
     const stopText = initCssReveal(
       el,

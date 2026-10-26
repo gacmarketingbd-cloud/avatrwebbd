@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import chassis from "../../avatr 07 page/control chassis image.webp";
 import { INK, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initCssReveal } from "./cssReveal";
 
 const SPECS = [
@@ -31,7 +32,7 @@ export default function TaihangChassis() {
   // 0.7s with no delay. Nothing inside the render moves independently. Skipped under reduced motion.
   useLayoutEffect(() => {
     const el = section.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("taihang", el)) return;
     const heading = el.querySelector<HTMLElement>("h2");
     const stopText = initCssReveal(
       el,

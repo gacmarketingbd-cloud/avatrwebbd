@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import AutoVideo from "./AutoVideo";
 import { INK, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initCssReveal } from "./cssReveal";
 
 // Phase 3 · 7 — First Perceive, Then Adjust Quickly. Heading, then a 1630px card (artboard): the
@@ -20,7 +21,7 @@ export default function HardBraking() {
   // Skipped under prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = section.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("braking", el)) return;
     const heading = el.querySelector<HTMLElement>("h2");
     const line = el.querySelector<HTMLElement>("h2 + p");
     let headingDone!: () => void;

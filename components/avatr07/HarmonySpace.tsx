@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import AutoVideo from "./AutoVideo";
 import CarouselArrow from "./CarouselArrow";
 import { INK, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initHarmonyReveal } from "./harmonyMotion";
 
 const OTA_NOTE = "*The actual commercial release timeline of specific features is subject to OTA";
@@ -135,7 +136,7 @@ export default function HarmonySpace() {
   useLayoutEffect(() => {
     const el = section.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (motionOff("harmony", el)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- reduced motion: show the final state at once; intentionally unchanged
       setRevealed(true);
       return;

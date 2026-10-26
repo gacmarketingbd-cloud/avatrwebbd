@@ -6,6 +6,7 @@ import mirror from "../../avatr 07 page/The FHD digital interior mirror.webp";
 import fridge from "../../avatr 07 page/fridge.webp";
 import wireless from "../../avatr 07 page/Wireless charging.webp";
 import { TAN, u } from "./scale";
+import { motionOff } from "./mobileMotionSwitch";
 import { initInteriorMirrorReveal } from "./interiorMirrorMotion";
 
 // `copy` is one paragraph per entry; `note` is an optional smaller footnote.
@@ -52,7 +53,7 @@ export default function InteriorMirror() {
   // static. Skipped under prefers-reduced-motion.
   useLayoutEffect(() => {
     const el = imagePanel.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!el || motionOff("mirror", el)) return;
     return initInteriorMirrorReveal(el);
   }, []);
   const go = (d: number) => setIndex((i) => (i + d + SLIDES.length) % SLIDES.length);
