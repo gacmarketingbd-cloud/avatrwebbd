@@ -18,6 +18,33 @@ export const MAX_RISE = 20; // px
 
 gsap.config({ force3D: true });
 
+// Entrance animations run on wall-clock time. GSAP's default lag smoothing counts any frame longer than 500ms as
+// 33ms; on a phone busy decoding large photos / 4K video that stretched a 2s number roll to 10s+ and left it
+// visibly frozen half-way (digits mid-roll, units and labels still hidden). Now a long frame simply jumps ahead.
+gsap.ticker.lagSmoothing(0);
+
+// Safety net: the final state is the fallback, never a half-animated section. Any one-shot animation still running
+// GRACE_MS after it should have ended in real time (frames stopped arriving, the tab was throttled, ...) is jumped
+// to its end, which also fires its onComplete clean-up (overlays removed, inline styles cleared). Checked on a timer,
+// not on the GSAP ticker, so it still runs when animation frames do not. Looping and scrubbed animations are skipped.
+const GRACE_MS = 2500;
+const firstSeen = new WeakMap<gsap.core.Animation, number>();
+if (typeof window !== "undefined") {
+  window.setInterval(() => {
+    const now = performance.now();
+    for (const a of gsap.globalTimeline.getChildren(false, true, true)) {
+      if (a.repeat() !== 0 || a.paused() || a.reversed() || a.progress() >= 1 || a.scrollTrigger) continue;
+      const seen = firstSeen.get(a);
+      if (seen === undefined) {
+        firstSeen.set(a, now);
+        continue;
+      }
+      const due = ((a.delay() + a.totalDuration()) / (a.timeScale() || 1)) * 1000 + GRACE_MS;
+      if (now - seen > due) a.progress(1);
+    }
+  }, 1000);
+}
+
 const active = (el: Element, except: gsap.core.Tween) =>
   gsap.getTweensOf(el).some((t) => t !== except && t.isActive() && !t.paused());
 
