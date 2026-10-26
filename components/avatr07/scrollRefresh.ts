@@ -20,11 +20,14 @@ export function refreshScrollTriggers() {
 // reaches them. False while the page is hidden or being prerendered (no real viewport yet), while a stylesheet is
 // still loading (the hero has no height yet, so everything below it measures near the top), and while the viewer is
 // at the very top of the page: the hero fills the first screen, so neither block can be on screen there.
+let stylesReady = false;
 export function triggerPositionsTrustworthy() {
   if (document.visibilityState !== "visible") return false;
   if ((document as Document & { prerendering?: boolean }).prerendering) return false;
   if (window.scrollY < 2) return false;
-  return [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].every((l) => l.sheet !== null);
+  if (stylesReady) return true; // once every stylesheet has loaded it stays loaded: do not re-query the DOM on every scroll
+  stylesReady = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].every((l) => l.sheet !== null);
+  return stylesReady;
 }
 
 // Per-section gate around triggerPositionsTrustworthy(). When the page was reached by a client-side navigation (the

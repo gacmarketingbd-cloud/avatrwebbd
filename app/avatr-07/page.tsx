@@ -27,6 +27,7 @@ import DoorSillBeam from "@/components/avatr07/DoorSillBeam";
 import FrontImpactBeam from "@/components/avatr07/FrontImpactBeam";
 import BatterySafety from "@/components/avatr07/BatterySafety";
 import MotionReady from "@/components/MotionReady";
+import MediaAhead from "@/components/avatr07/MediaAhead";
 import PageTopReset from "@/components/PageTopReset";
 import { ROOT_SCALE } from "@/components/avatr07/scale";
 
@@ -66,6 +67,7 @@ export default function Avatr07Page() {
       <KunlunPowertrain />
       </div>
       <MotionReady />
+      <MediaAhead />
       <Airbags />
       <DoorSillBeam />
       <FrontImpactBeam />

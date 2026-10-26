@@ -36,8 +36,20 @@ export default function AutoVideo({
   const sync = () => {
     const v = ref.current;
     if (!v) return;
-    if (onScreen.current && wanted.current) void v.play().catch(() => {});
-    else v.pause();
+    if (onScreen.current && wanted.current) {
+      // Start playing only once enough is buffered to keep going: decoding frames while the file is still arriving
+      // makes both the video and the page stutter (and starts the clip with a visible hitch).
+      if (v.readyState >= 3) void v.play().catch(() => {});
+      else {
+        v.addEventListener(
+          "canplay",
+          () => {
+            if (onScreen.current && wanted.current) void v.play().catch(() => {});
+          },
+          { once: true },
+        );
+      }
+    } else v.pause();
   };
 
   useEffect(() => {
