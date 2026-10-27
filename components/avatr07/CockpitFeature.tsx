@@ -132,7 +132,7 @@ export default function CockpitFeature() {
         style={{ paddingBottom: u(22, 18), zIndex: 4 }}
       >
         <h2 ref={headlineRef} className="text-stable font-normal" style={{ fontSize: u(30, 20), lineHeight: 1.15 }}>
-          A Space That Understands You
+          Five-screen Interaction with Digital Wraparound Design
         </h2>
         {/* The same will-change / backface-visibility the entrance uses are also set in CSS (.text-stable), so the
             layer is never dropped when the entrance ends (that re-rasterised the text and made it step). GSAP is
@@ -142,7 +142,7 @@ export default function CockpitFeature() {
           className="text-stable font-light"
           style={{ marginTop: u(2, 4), fontSize: u(16, 13.5), lineHeight: 1.35 }}
         >
-          Thoughtfully crafted surroundings, intuitive technology and refined details bring a personal touch to every journey.
+          Surround ambient lighting
         </p>
 
         <div role="radiogroup" aria-label="Interior theme" className="flex" style={{ marginTop: u(16, 12) }}>
