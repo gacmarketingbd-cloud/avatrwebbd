@@ -38,13 +38,13 @@ export default function SpecsIntro() {
   return (
     <section ref={ref} className="bg-white px-5" style={{ paddingTop: u(56, 44), paddingBottom: u(68, 50) }}>
       <SectionHeading
-        title="Futuristic Design"
+        title="The Art of Standing Apart"
         titleSize={58}
         subtitleSize={22}
         ruleGap={20}
         ruleWidth={520}
         subtitleGap={26}
-        subtitle="Flowing lines and an elegantly dynamic posture – breaking boundaries and convention"
+        subtitle="Sculpted contours and daring proportions give progressive design a form of its own"
       />
 
       <dl

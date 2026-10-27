@@ -24,7 +24,8 @@ export default function SectionHeading({
       <h2
         data-fx="title"
         className="font-normal"
-        style={{ color: TAN, fontSize: u(titleSize, titleSize > 60 ? 32 : 28), lineHeight: 1.15, letterSpacing: "0.005em" }}
+        // balance: when a title wraps (narrow phones), its lines come out even instead of leaving one word alone
+        style={{ color: TAN, fontSize: u(titleSize, titleSize > 60 ? 32 : 28), lineHeight: 1.15, letterSpacing: "0.005em", textWrap: "balance" }}
       >
         {title}
       </h2>
