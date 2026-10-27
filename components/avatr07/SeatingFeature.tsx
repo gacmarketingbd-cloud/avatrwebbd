@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useLayoutEffect, useRef, useState } from "react";
+import { usePhotoVariants } from "./photoVariants";
 import Image from "next/image";
 import zeroGravity from "../../avatr 07 page/Front‑Row Dual Zero‑Gravity Seats.webp";
 import nappa from "../../avatr 07 page/NAPPA-Top-Layer-Leather.webp";
@@ -45,7 +46,8 @@ const FADE = "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)";
 // centred description. The active tab's dark underline is as wide as its title's widest line and shares the
 // title's horizontal centre; the thin grey separator spans the whole column.
 export default function SeatingFeature() {
-  const [active, setActive] = useState(0);
+  const photo = useRef<HTMLDivElement>(null);
+  const { active, shown, select, track, mounted } = usePhotoVariants(0, photo);
   const titles = useRef<(HTMLSpanElement | null)[]>([]);
   const [widths, setWidths] = useState<number[]>([]);
 
@@ -71,18 +73,19 @@ export default function SeatingFeature() {
   return (
     <section className="bg-white px-5" style={{ paddingTop: u(60, 36), paddingBottom: u(70, 36) }}>
       <div className="mx-auto w-full lg:max-w-[min(calc(var(--u)*1250),calc((100svh-72px-var(--u)*212-30px)/0.5530))]">
-        <div className="relative aspect-[3000/1659] w-full overflow-hidden">
-          {TABS.map((t, i) => (
+        <div ref={photo} className="relative aspect-[3000/1659] w-full overflow-hidden">
+          {TABS.map((t, i) => mounted(i) && (
             <Image
               key={t.id}
               src={t.image}
-              alt={i === active ? t.alt : ""}
-              aria-hidden={i !== active}
+              alt={i === shown ? t.alt : ""}
+              aria-hidden={i !== shown}
               fill
               quality={100}
               sizes="(min-width: 1920px) 1250px, (min-width: 1024px) 65vw, 100vw"
               className="object-cover"
-              style={{ opacity: i === active ? 1 : 0, transition: FADE, zIndex: i === active ? 1 : 0 }}
+              style={{ opacity: i === shown ? 1 : 0, transition: FADE, zIndex: i === shown ? 1 : 0 }}
+              {...track(i)}
             />
           ))}
         </div>
@@ -96,7 +99,7 @@ export default function SeatingFeature() {
               id={`seat-tab-${t.id}`}
               aria-selected={i === active}
               aria-controls="seat-panel"
-              onClick={() => setActive(i)}
+              onClick={() => select(i)}
               className="relative flex items-center justify-center px-4 text-center transition-opacity duration-300 lg:min-h-[calc(var(--u)*70)]"
               style={{
                 color: INK,

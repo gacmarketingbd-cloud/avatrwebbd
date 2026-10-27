@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import CarouselArrow from "./CarouselArrow";
 import SpecCaption, { type SpecStat } from "./SpecCaption";
@@ -9,6 +9,7 @@ import refuel from "../../avatr 07 page/Refueling and charge.webp";
 import powerful from "../../avatr 07 page/Powerful performance with or without charge.webp";
 import { INK, u } from "./scale";
 import { initCssReveal } from "./cssReveal";
+import { usePhotoVariants } from "./photoVariants";
 
 const SPEC_NOTE =
   "*Specifications may vary depending on configuration. Data is based on announced or engineering development simulation values, which may be affected by weather, road condition, battery SOC, load, tire and other test factors, and is used for reference only";
@@ -74,9 +75,9 @@ const FADE = "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1)";
 // image edges on phones. On short desktop viewports the card narrows (image height follows) so that
 // image + caption stay within one screen: width <= (viewport height - header/margins - caption) / image aspect.
 export default function KunlunPowertrain() {
-  const [index, setIndex] = useState(0);
   const section = useRef<HTMLElement>(null);
   const media = useRef<HTMLDivElement>(null);
+  const { active: index, shown, select, track, mounted } = usePhotoVariants(0, media);
   const captionBox = useRef<HTMLDivElement>(null);
 
   // Quick, responsive Apple-style reveal (see cssReveal.ts), with its own timings for this section: the heading and
@@ -113,7 +114,7 @@ export default function KunlunPowertrain() {
       stopImage?.();
     };
   }, []);
-  const go = (d: number) => setIndex((i) => (i + d + SLIDES.length) % SLIDES.length);
+  const go = (d: number) => select((index + d + SLIDES.length) % SLIDES.length);
 
   return (
     <section ref={section} className="bg-white" style={{ paddingTop: u(24, 0), paddingBottom: u(83, 44), color: INK }}>
@@ -129,17 +130,18 @@ export default function KunlunPowertrain() {
       <div className="relative mx-auto w-full px-5 md:max-w-[min(calc(var(--u)*1452),calc((100svh-128px-var(--u)*301)/0.444))] md:px-0" style={{ marginTop: u(40, 28) }}>
         <div className="relative">
           <div ref={media} className="relative aspect-video w-full overflow-hidden bg-[#d9d9db] md:aspect-[1632/725]">
-            {SLIDES.map((s, i) => (
+            {SLIDES.map((s, i) => mounted(i) && (
               <Image
                 key={s.id}
                 src={s.image}
-                alt={i === index ? s.alt : ""}
-                aria-hidden={i !== index}
+                alt={i === shown ? s.alt : ""}
+                aria-hidden={i !== shown}
                 fill
                 quality={100}
                 sizes="(min-width: 768px) 76vw, 100vw"
                 className="object-cover"
-                style={{ opacity: i === index ? 1 : 0, transition: FADE, zIndex: i === index ? 1 : 0 }}
+                style={{ opacity: i === shown ? 1 : 0, transition: FADE, zIndex: i === shown ? 1 : 0 }}
+                {...track(i)}
               />
             ))}
           </div>

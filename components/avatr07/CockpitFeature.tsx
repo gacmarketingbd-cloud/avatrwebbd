@@ -1,11 +1,12 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import glacierCaramel from "../../avatr 07 page/Glacier Caramel Cockpit.webp";
 import tintedShadows from "../../avatr 07 page/Tinted Shadows Cockpit.webp";
 import { u } from "./scale";
 import { initCockpitText } from "./cockpitTextMotion";
+import { usePhotoVariants } from "./photoVariants";
 
 // ---------------------------------------------------------------------------------------------
 // ONE fixed stage, two interior renders registered to each other.
@@ -42,7 +43,8 @@ const FADE_MS = 700;
 const FADE_EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
 
 export default function CockpitFeature() {
-  const [active, setActive] = useState<ThemeId>(DEFAULT_THEME);
+  const stage = useRef<HTMLElement>(null);
+  const { active, shown, select, track, mounted } = usePhotoVariants<ThemeId>(DEFAULT_THEME, stage);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subcopyRef = useRef<HTMLParagraphElement>(null);
 
@@ -65,7 +67,7 @@ export default function CockpitFeature() {
 
   return (
     // container-type:size lets the stage use cq units to cover the frame exactly like object-cover.
-    <section className="relative aspect-[4/5] w-full overflow-hidden bg-black [container-type:size] sm:aspect-[4/3] md:aspect-[1920/856]">
+    <section ref={stage} className="relative aspect-[4/5] w-full overflow-hidden bg-black [container-type:size] sm:aspect-[4/3] md:aspect-[1920/856]">
       {/* The fixed stage: Tinted's framing, covering the section, top-anchored and centred. Both
           renders live inside it, so they always share one size, position and crop. */}
       <div
@@ -73,21 +75,25 @@ export default function CockpitFeature() {
         style={{ width: `max(100cqw, calc(100cqh * ${STAGE_ASPECT}))`, aspectRatio: "3754 / 1676" }}
       >
         {/* Tinted Shadows: already right-hand drive, fills the stage exactly. */}
-        <div className="absolute inset-0" style={layerStyle(active === "tinted")}>
+        {mounted("tinted") && (
+        <div className="absolute inset-0" style={layerStyle(shown === "tinted")}>
           <Image
             src={tintedShadows}
-            alt={active === "tinted" ? "AVATR 07 cockpit in Tinted Shadows" : ""}
-            aria-hidden={active !== "tinted"}
+            alt={shown === "tinted" ? "AVATR 07 cockpit in Tinted Shadows" : ""}
+            aria-hidden={shown !== "tinted"}
             fill
             quality={100}
             sizes="(min-width: 768px) 100vw, (min-width: 640px) 170vw, 280vw"
             className="object-fill"
+            {...track("tinted")}
           />
         </div>
+        )}
 
         {/* Glacier Caramel: supplied left-hand drive, so it is mirrored; then registered onto the
             stage with the fixed scale/offset above. */}
-        <div className="absolute inset-0" style={layerStyle(active === "glacier")}>
+        {mounted("glacier") && (
+        <div className="absolute inset-0" style={layerStyle(shown === "glacier")}>
           <div
             className="absolute left-0 top-0 w-full"
             style={{
@@ -98,15 +104,17 @@ export default function CockpitFeature() {
           >
             <Image
               src={glacierCaramel}
-              alt={active === "glacier" ? "AVATR 07 cockpit in Glacier Caramel" : ""}
-              aria-hidden={active !== "glacier"}
+              alt={shown === "glacier" ? "AVATR 07 cockpit in Glacier Caramel" : ""}
+              aria-hidden={shown !== "glacier"}
               fill
               quality={100}
               sizes="(min-width: 768px) 108vw, (min-width: 640px) 185vw, 310vw"
               className="-scale-x-100 object-fill"
+              {...track("glacier")}
             />
           </div>
         </div>
+        )}
       </div>
 
       <div
@@ -146,7 +154,7 @@ export default function CockpitFeature() {
                 type="button"
                 role="radio"
                 aria-checked={selected}
-                onClick={() => setActive(t.id)}
+                onClick={() => select(t.id)}
                 className="flex flex-col items-center"
                 style={{ width: u(130, 104) }}
               >

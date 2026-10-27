@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import mirror from "../../avatr 07 page/The FHD digital interior mirror.webp";
 import fridge from "../../avatr 07 page/fridge.webp";
@@ -8,6 +8,7 @@ import wireless from "../../avatr 07 page/Wireless charging.webp";
 import { TAN, u } from "./scale";
 import { initInteriorMirrorReveal } from "./interiorMirrorMotion";
 import { byViewport, initInteriorMirrorMobile } from "./mobileMotion";
+import { usePhotoVariants } from "./photoVariants";
 
 // `copy` is one paragraph per entry; `note` is an optional smaller footnote.
 const SLIDES = [
@@ -46,8 +47,8 @@ function Arrow({ dir }: { dir: "prev" | "next" }) {
 // artboard, 24px gutter, 60px side margins) with a 3-slide pager. Desktop keeps the pair side by side;
 // phones stack them.
 export default function InteriorMirror() {
-  const [index, setIndex] = useState(0);
   const imagePanel = useRef<HTMLDivElement>(null);
+  const { active: index, shown, select, track, mounted } = usePhotoVariants(0, imagePanel);
 
   // Image panel only: a soft fade + 0.985 -> 1 scale when it enters the viewport (once). The text panel stays
   // static. Skipped under prefers-reduced-motion.
@@ -56,23 +57,24 @@ export default function InteriorMirror() {
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     return byViewport(() => initInteriorMirrorReveal(el), () => initInteriorMirrorMobile(el));
   }, []);
-  const go = (d: number) => setIndex((i) => (i + d + SLIDES.length) % SLIDES.length);
+  const go = (d: number) => select((index + d + SLIDES.length) % SLIDES.length);
 
   return (
     <section className="bg-white px-5 md:px-[calc(var(--u)*60)]" style={{ paddingTop: u(121, 44), paddingBottom: u(83, 44) }}>
       <div className="grid md:grid-cols-[1152fr_624fr]" style={{ gap: u(24, 12) }}>
         <div ref={imagePanel} className="relative aspect-[1152/617] w-full overflow-hidden bg-black">
-          {SLIDES.map((s, i) => (
+          {SLIDES.map((s, i) => mounted(i) && (
             <Image
               key={s.image.src}
               src={s.image}
-              alt={i === index ? s.alt : ""}
-              aria-hidden={i !== index}
+              alt={i === shown ? s.alt : ""}
+              aria-hidden={i !== shown}
               fill
               quality={100}
               sizes={s.sizes}
               className="object-cover"
-              style={{ opacity: i === index ? 1 : 0, transition: FADE, zIndex: i === index ? 1 : 0 }}
+              style={{ opacity: i === shown ? 1 : 0, transition: FADE, zIndex: i === shown ? 1 : 0 }}
+              {...track(i)}
             />
           ))}
         </div>

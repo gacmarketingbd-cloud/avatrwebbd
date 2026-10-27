@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import andesGray from "../../avatr 07 page/Andes Gray.webp";
 import cottonWhite from "../../avatr 07 page/Cotton White.webp";
@@ -9,6 +9,7 @@ import skylightSilk from "../../avatr 07 page/Skylight Silk.webp";
 import damsonMetallic from "../../avatr 07 page/Damson Metallic.webp";
 import { INK, u } from "./scale";
 import { initHeadingReveal } from "./headingReveal";
+import { usePhotoVariants } from "./photoVariants";
 
 // `dot` gradients are temporary swatch fills (to be replaced by supplied dots).
 const COLOURS = [
@@ -20,7 +21,8 @@ const COLOURS = [
 ];
 
 export default function ColourPicker() {
-  const [active, setActive] = useState(0);
+  const photo = useRef<HTMLDivElement>(null);
+  const { active, shown, select, track, mounted } = usePhotoVariants(0, photo);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   // Heading only: rises ~18px while fading in, once, as it enters the viewport. Skipped under
@@ -47,20 +49,22 @@ export default function ColourPicker() {
       {/* Window onto the car renders: the source PNGs carry a lot of empty
           margin, so only the car + shadow band is shown. */}
       <div
+        ref={photo}
         className="relative left-1/2 aspect-[1500/480] w-[128vw] -translate-x-1/2 md:w-[calc(var(--u)*1000)]"
         style={{ marginTop: u(96, 28) }}
       >
-        {COLOURS.map((c, i) => (
+        {COLOURS.map((c, i) => mounted(i) && (
           <Image
             key={c.name}
             src={c.image}
-            alt={i === active ? `AVATR 07 in ${c.name}` : ""}
-            aria-hidden={i !== active}
+            alt={i === shown ? `AVATR 07 in ${c.name}` : ""}
+            aria-hidden={i !== shown}
             fill
             quality={100}
             sizes="(min-width: 1920px) 1000px, (min-width: 768px) 53vw, 128vw"
             className="object-cover object-[50%_51.8%] transition-opacity duration-500 ease-in-out"
-            style={{ opacity: i === active ? 1 : 0 }}
+            style={{ opacity: i === shown ? 1 : 0 }}
+            {...track(i)}
           />
         ))}
       </div>
@@ -80,7 +84,7 @@ export default function ColourPicker() {
               role="radio"
               aria-checked={selected}
               aria-label={c.name}
-              onClick={() => setActive(i)}
+              onClick={() => select(i)}
               className="relative flex items-center justify-center"
               style={{ width: u(100, 52), height: u(56, 48) }}
             >
