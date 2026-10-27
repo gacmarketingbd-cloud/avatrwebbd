@@ -82,7 +82,9 @@ export default function SeatingFeature() {
               aria-hidden={i !== shown}
               fill
               quality={100}
-              sizes="(min-width: 1920px) 1250px, (min-width: 1024px) 65vw, 100vw"
+              // Phones ask for at most the 1200px copy: from 1920px up the server answers the Zero-Gravity photo with its
+              // untouched ~60-megapixel original, which a phone decodes slowly and paints block by block.
+              sizes="(min-width: 1920px) 1250px, (min-width: 1024px) 65vw, (min-width: 768px) 100vw, (min-resolution: 3.1dppx) 300px, 400px"
               className="object-cover"
               style={{ opacity: i === shown ? 1 : 0, transition: FADE, zIndex: i === shown ? 1 : 0 }}
               {...track(i)}

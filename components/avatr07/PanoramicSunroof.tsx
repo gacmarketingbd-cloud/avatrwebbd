@@ -34,7 +34,9 @@ export default function PanoramicSunroof() {
         alt="AVATR 07 panoramic sunroof and cabin"
         fill
         quality={100}
-        sizes="(min-width: 768px) 100vw, (min-width: 640px) 138vw, 230vw"
+        // Phones ask for the 2048px copy (the 1920px one below 3x density), never 3840: for this photo the server answers
+        // 3840 with the untouched original (~50 megapixels), which a phone decodes slowly and paints block by block.
+        sizes="(min-width: 768px) 100vw, (min-resolution: 3.1dppx) 510px, 680px"
         className="object-cover"
       />
       <p
