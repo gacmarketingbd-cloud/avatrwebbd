@@ -6,6 +6,7 @@ import Image from "next/image";
 import sound from "../../avatr 07 page/Meridian™ High-end Sound System.webp";
 import StatFigure from "./StatFigure";
 import { u } from "./scale";
+import { byViewport, initMeridianTextMobile } from "./mobileMotion";
 import { initMeridianText } from "./meridianMotion";
 
 const STATS = [
@@ -34,7 +35,7 @@ export default function MeridianSound() {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return initMeridianText(el);
+    return byViewport(() => initMeridianText(el), () => initMeridianTextMobile(el));
   }, []);
 
   return (

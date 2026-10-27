@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import SectionHeading from "./SectionHeading";
 import { INK, TAN, u } from "./scale";
 import { initLuxuryStatsMotion } from "./luxuryStatsMotion";
+import { byViewport, initLuxuryStatsMobile } from "./mobileMotion";
 
 const STATS = [
   { prefix: "", value: "35.4", label: "4K panoramic horizon screen" },
@@ -18,7 +19,7 @@ export default function LuxuryStats() {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return initLuxuryStatsMotion(el);
+    return byViewport(() => initLuxuryStatsMotion(el), () => initLuxuryStatsMobile(el));
   }, []);
 
   return (

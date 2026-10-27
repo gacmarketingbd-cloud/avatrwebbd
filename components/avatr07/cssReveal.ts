@@ -58,18 +58,22 @@ export function initCssReveal(
     }
   };
 
-  for (const s of prepared) {
-    for (const el of s.els) {
-      if (s.fade) el.style.opacity = String(s.opacityFrom ?? 0);
-      if (s.filter) el.style.filter = s.filter;
-      if (s.move) {
-        el.style.transform = from(s);
-        el.style.transformOrigin = "50% 50%";
+  // The hidden start state is applied only once the trigger exists (below); until then, and if setting up fails, the
+  // elements keep their final visible design.
+  const arm = () => {
+    for (const s of prepared) {
+      for (const el of s.els) {
+        if (s.fade) el.style.opacity = String(s.opacityFrom ?? 0);
+        if (s.filter) el.style.filter = s.filter;
+        if (s.move) {
+          el.style.transform = from(s);
+          el.style.transformOrigin = "50% 50%";
+        }
+        el.style.willChange = [s.move && "transform", s.fade && "opacity", s.filter && "filter"].filter(Boolean).join(", ");
+        el.style.backfaceVisibility = "hidden";
       }
-      el.style.willChange = [s.move && "transform", s.fade && "opacity", s.filter && "filter"].filter(Boolean).join(", ");
-      el.style.backfaceVisibility = "hidden";
     }
-  }
+  };
 
   // `gate`: do not start until this promise settles (a later stage of a hierarchy waits for the earlier one, so
   // even a fast scroll that satisfies both triggers at once still reveals them in order).
@@ -105,23 +109,32 @@ export function initCssReveal(
     });
   };
 
-  const ctx = gsap.context(() => {
-    const evaluate = () => {
-      if (!played && trigger.getBoundingClientRect().top < window.innerHeight * triggerAt) play();
-    };
-    ScrollTrigger.create({ trigger, start: `top ${triggerAt * 100}%`, once: true, onEnter: play });
-    window.addEventListener("scroll", evaluate, { passive: true });
-    window.addEventListener("resize", evaluate);
-    cleanupListeners = () => {
-      window.removeEventListener("scroll", evaluate);
-      window.removeEventListener("resize", evaluate);
-    };
-    evaluate();
-    document.fonts?.ready.then(() => {
-      refreshScrollTriggers();
+  let ctx: gsap.Context;
+  try {
+    ctx = gsap.context(() => {
+      const evaluate = () => {
+        if (!played && trigger.getBoundingClientRect().top < window.innerHeight * triggerAt) play();
+      };
+      ScrollTrigger.create({ trigger, start: `top ${triggerAt * 100}%`, once: true, onEnter: play });
+      arm();
+      window.addEventListener("scroll", evaluate, { passive: true });
+      window.addEventListener("resize", evaluate);
+      cleanupListeners = () => {
+        window.removeEventListener("scroll", evaluate);
+        window.removeEventListener("resize", evaluate);
+      };
       evaluate();
-    });
-  }, section);
+      document.fonts?.ready.then(() => {
+        refreshScrollTriggers();
+        evaluate();
+      });
+    }, section);
+  } catch {
+    // could not set the trigger up: leave the section in its final visible state
+    cleanupListeners();
+    clear();
+    return;
+  }
 
   return () => {
     disposed = true;

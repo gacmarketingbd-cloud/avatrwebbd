@@ -5,6 +5,7 @@ import Image from "next/image";
 import rearSeat from "../../avatr 07 page/Rear Seat.webp";
 import StatFigure from "./StatFigure";
 import { u } from "./scale";
+import { byViewport, initStatRollMobile } from "./mobileMotion";
 import { initStatRoll } from "./statRollMotion";
 
 const STATS = [
@@ -25,7 +26,7 @@ export default function RearCabin() {
   useLayoutEffect(() => {
     const el = stats.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return initStatRoll(el);
+    return byViewport(() => initStatRoll(el), () => initStatRollMobile(el));
   }, []);
 
   return (

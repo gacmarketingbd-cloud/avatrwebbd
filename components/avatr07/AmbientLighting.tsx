@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import AutoVideo from "./AutoVideo";
 import { u } from "./scale";
+import { byViewport, initAmbientLightingMobile } from "./mobileMotion";
 import { initAmbientLighting } from "./ambientMotion";
 
 // The word "Ambient": a 250%-wide horizontal gradient clipped to the letters (only background-position is ever
@@ -36,7 +37,7 @@ export default function AmbientLighting() {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return initAmbientLighting(el);
+    return byViewport(() => initAmbientLighting(el), () => initAmbientLightingMobile(el));
   }, []);
 
   return (

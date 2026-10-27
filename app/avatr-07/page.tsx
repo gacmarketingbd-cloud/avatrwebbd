@@ -50,6 +50,10 @@ export default function Avatr07Page() {
       <DesignMosaic />
       <ColourPicker />
       <CockpitFeature />
+      </div>
+      {/* From here down, phones use the CSS-transition entrances in mobileMotion.ts and are never hidden at start-up
+          (see the mobile rule in globals.css); desktop treats this wrapper exactly like the one above. */}
+      <div data-motion="lower" className="contents">
       <LuxuryStats />
       <RearCabin />
       <SeatingFeature />

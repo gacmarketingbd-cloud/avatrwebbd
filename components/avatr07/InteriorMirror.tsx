@@ -7,6 +7,7 @@ import fridge from "../../avatr 07 page/fridge.webp";
 import wireless from "../../avatr 07 page/Wireless charging.webp";
 import { TAN, u } from "./scale";
 import { initInteriorMirrorReveal } from "./interiorMirrorMotion";
+import { byViewport, initInteriorMirrorMobile } from "./mobileMotion";
 
 // `copy` is one paragraph per entry; `note` is an optional smaller footnote.
 const SLIDES = [
@@ -53,7 +54,7 @@ export default function InteriorMirror() {
   useLayoutEffect(() => {
     const el = imagePanel.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return initInteriorMirrorReveal(el);
+    return byViewport(() => initInteriorMirrorReveal(el), () => initInteriorMirrorMobile(el));
   }, []);
   const go = (d: number) => setIndex((i) => (i + d + SLIDES.length) % SLIDES.length);
 

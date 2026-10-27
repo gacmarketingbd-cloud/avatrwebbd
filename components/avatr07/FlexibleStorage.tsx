@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef } from "react";
 import AutoVideo from "./AutoVideo";
 import { u } from "./scale";
+import { byViewport, initStorageTextMobile } from "./mobileMotion";
 import { initStorageText } from "./storageMotion";
 
 // Phase 3 · 2 — Flexible Storage for Every Need. A full-bleed video band (1920x824 on the artboard;
@@ -18,7 +19,7 @@ export default function FlexibleStorage() {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return initStorageText(el);
+    return byViewport(() => initStorageText(el), () => initStorageTextMobile(el));
   }, []);
 
   return (

@@ -114,3 +114,44 @@ html.motion-pending [data-motion] {
   will-change: transform, opacity;
   backface-visibility: hidden;
 }
+
+/* Phones and small touch tablets (same query as MOBILE_QUERY in components/avatr07/mobileMotion.ts). The sections from
+   Luxury Experience down use the simpler CSS-transition entrances there, so:
+   - they are not hidden while the page starts up (data-motion="lower"): their default state is the final design, and
+     a section only gets a hidden start state once its trigger is set up and it is still below the screen;
+   - the permanent layer hints above (kept on desktop against an end-of-tween text snap) are dropped: on a phone each
+     one is a large GPU texture at 3x pixel density, and together they compete with the photos and videos. */
+@media (max-width: 767px), (pointer: coarse) and (max-width: 1023px) {
+  html.motion-pending [data-motion="lower"] {
+    visibility: visible;
+  }
+  .stat-stable [data-fx="spec-unit"],
+  .stat-stable [data-fx="spec-label"],
+  .lux-stable [data-fx="title"],
+  .lux-stable [data-fx="subtitle"],
+  .sunroof-stable [data-line],
+  .sunroof-stable [data-hl],
+  .acoustic-stable > div > h2,
+  .acoustic-stable [data-fx="card"],
+  .acoustic-stable [data-fx="card-title"],
+  .acoustic-stable [data-fx="card-desc"],
+  .acoustic-stable [data-fx="algo"] img,
+  .acoustic-stable [data-fx="algo-text"] {
+    will-change: auto;
+    backface-visibility: visible;
+  }
+}
+
+/* Mobile: the gradient inside "Ambient" flows by one tile per cycle (background-size 250%: shifting the position by
+   166.667% moves it exactly one tile width), as a CSS animation instead of a JavaScript loop. */
+@keyframes ambient-flow {
+  from {
+    background-position-x: 166.667%;
+  }
+  to {
+    background-position-x: 0%;
+  }
+}
+.ambient-flow {
+  animation: ambient-flow 3.5s linear infinite;
+}

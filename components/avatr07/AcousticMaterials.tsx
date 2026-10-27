@@ -13,6 +13,7 @@ import intelliQ from "../../avatr 07 page/Intelli-Q.png";
 import { u } from "./scale";
 import { initAcousticIntro } from "./acousticMotion";
 import { initAlgorithmIntro } from "./algorithmMotion";
+import { byViewport, initAcousticMobile } from "./mobileMotion";
 
 const BG = "#b08e76"; // sampled from the reference's tan field
 
@@ -56,12 +57,17 @@ export default function AcousticMaterials() {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const stopCards = initAcousticIntro(el);
-    const stopAlgos = initAlgorithmIntro(el);
-    return () => {
-      stopCards?.();
-      stopAlgos?.();
-    };
+    return byViewport(
+      () => {
+        const stopCards = initAcousticIntro(el);
+        const stopAlgos = initAlgorithmIntro(el);
+        return () => {
+          stopCards?.();
+          stopAlgos?.();
+        };
+      },
+      () => initAcousticMobile(el),
+    );
   }, []);
 
   return (
