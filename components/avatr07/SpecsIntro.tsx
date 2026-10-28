@@ -54,7 +54,7 @@ export default function SpecsIntro() {
         {SPECS.map((s) => (
           <div key={s.label} data-fx="spec" className="flex flex-col items-center md:mx-[calc(var(--u)*36)]">
             <dd data-fx="spec-value" className="flex items-baseline whitespace-nowrap" style={{ lineHeight: 1.1 }}>
-              <span data-fx="spec-num" className="relative font-normal" style={{ color: TAN, fontSize: u(45, 30) }}>
+              <span data-fx="spec-num" className="relative font-normal" style={{ color: INK, fontSize: u(45, 30) }}>
                 {s.value}
               </span>
               <span className="ml-[0.25em]" style={{ color: INK, fontSize: u(18, 12) }}>

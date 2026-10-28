@@ -1,4 +1,4 @@
-import { TAN, u } from "./scale";
+import { INK, TAN, u } from "./scale";
 
 // Title + hairline (+ optional subtitle) used by Futuristic Design and Luxury
 // Experience. The hairline is 750 artboard px wide with a darker centre segment.
@@ -25,7 +25,7 @@ export default function SectionHeading({
         data-fx="title"
         className="font-normal"
         // balance: when a title wraps (narrow phones), its lines come out even instead of leaving one word alone
-        style={{ color: TAN, fontSize: u(titleSize, titleSize > 60 ? 32 : 28), lineHeight: 1.15, letterSpacing: "0.005em", textWrap: "balance" }}
+        style={{ color: INK, fontSize: u(titleSize, titleSize > 60 ? 32 : 28), lineHeight: 1.15, letterSpacing: "0.005em", textWrap: "balance" }}
       >
         {title}
       </h2>

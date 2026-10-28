@@ -263,7 +263,7 @@ export default function ModesCarousel() {
           <span
             ref={nine}
             className="font-normal"
-            style={{ color: TAN, fontSize: "calc(var(--cw, 292px) * 0.66)", lineHeight: 0.9, letterSpacing: "0.01em" }}
+            style={{ color: INK, fontSize: "calc(var(--cw, 292px) * 0.66)", lineHeight: 0.9, letterSpacing: "0.01em" }}
           >
             9
           </span>

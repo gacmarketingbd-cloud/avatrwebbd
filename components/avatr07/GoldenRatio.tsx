@@ -57,7 +57,7 @@ export default function GoldenRatio() {
         <h2
           data-fx="gr-title"
           className="font-normal"
-          style={{ color: TAN, fontSize: u(58, 30), lineHeight: 1.15, letterSpacing: "0.005em" }}
+          style={{ color: INK, fontSize: u(58, 30), lineHeight: 1.15, letterSpacing: "0.005em" }}
         >
           Golden Ratio Proportions
         </h2>

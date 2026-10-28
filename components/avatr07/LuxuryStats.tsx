@@ -58,7 +58,7 @@ export default function LuxuryStats() {
                     {s.prefix}
                   </span>
                 )}
-                <span data-fx="spec-num" className="relative font-normal" style={{ color: TAN, fontSize: u(45, 34) }}>
+                <span data-fx="spec-num" className="relative font-normal" style={{ color: INK, fontSize: u(45, 34) }}>
                   {s.value}
                 </span>
                 <span data-fx="spec-unit" className="ml-[0.25em]" style={{ color: INK, fontSize: u(18, 14) }}>
